@@ -1,24 +1,19 @@
 data "aws_ami" "ami" {
   most_recent = true
-
   filter {
     name   = "name"
     values = var.image_name
   }
-
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-
   owners = var.owner
-
-  tags = var.tags_ami_lookup
 }
 
 resource "aws_network_interface" "network_interface" {
   subnet_id   = var.subnet_id
-
+  security_groups = var.sg_list
   tags = var.tags_network_interface
 }
 

@@ -9,3 +9,7 @@ variable "cidr_range" {
 variable "vpc_id" {
     type = string
 }
+
+variable "route" {
+  type = any
+}

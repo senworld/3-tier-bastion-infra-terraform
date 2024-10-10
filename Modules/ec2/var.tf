@@ -6,10 +6,6 @@ variable "image_name" {
   type = list(string)
 }
 
-variable "tags_ami_lookup" {
-  type = map(string)
-}
-
 variable "tags_network_interface" {
   type = map(string)
 }
@@ -28,4 +24,8 @@ variable "subnet_id" {
 
 variable "key_pair_id" {
   type = string
+}
+
+variable "sg_list" {
+  type = list(string)
 }
