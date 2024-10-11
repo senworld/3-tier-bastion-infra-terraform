@@ -105,6 +105,34 @@ nacl_ingress_rules = [
 
 web_sg_ingress_rules = [
   {
+    description = "Allow HTTP"
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol = "tcp"
+    from_port = "80"
+    to_port = "80"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
+web_sg_egress_rules = [
+  {
+    description = "Allow all Outbound"
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol = "-1"
+    from_port = "0"
+    to_port = "0"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
+bastion_sg_ingress_rules = [
+  {
     description = "Allow SHH"
     cidr_blocks = ["0.0.0.0/0"]
     protocol = "tcp"
@@ -117,7 +145,7 @@ web_sg_ingress_rules = [
   }
 ]
 
-web_sg_egress_rules = [
+bastion_sg_egress_rules = [
   {
     description = "Allow all Outbound"
     cidr_blocks = ["0.0.0.0/0"]

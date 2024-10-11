@@ -31,6 +31,12 @@ variable "root_tags" {
   }
 }
 
+variable "bastion_tags" {
+  default = {
+    Name = "Bastion"
+  }
+}
+
 variable "web_tags" {
   default = {
     Name = "Webtier"
@@ -79,3 +85,13 @@ variable "web_sg_egress_rules" {
 # variable "db_sg_rules" {
 #   type = any
 # }
+
+variable "bastion_sg_ingress_rules" {
+ type = any 
+ default = null
+}
+
+variable "bastion_sg_egress_rules" {
+ type = any 
+ default = null
+}

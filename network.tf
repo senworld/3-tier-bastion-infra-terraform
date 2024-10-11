@@ -1,6 +1,6 @@
-########################
-#vpc_a declaration
-########################
+##################################
+#Application root vpc declaration
+##################################
 module "vpc_a" {
   source = "./Modules/vpc"
   cidr_range = "192.168.0.0/16"
@@ -105,4 +105,57 @@ module "rt_subnet_db_link" {
   subnet_id = module.subnet_db[count.index].id
   route_table_id = module.route_table_db.id
   count = length(var.subnet_db)
+}
+
+#================================================X================================================#
+
+##################################
+# JumpServer/Bastion vpc declaration
+##################################
+module "vpc_b" {
+  source = "./Modules/vpc"
+  cidr_range = "10.0.0.0/16"
+  tags_value = merge(var.bastion_tags,local.tags)
+}
+
+module "internet_gateway_b"{
+  source = "./Modules/internet_gateway"
+  vpc_id = module.vpc_b.id
+  tags_value = merge(var.bastion_tags,local.tags)
+}
+
+################################
+#Route table declaration
+################################
+
+module "route_table_bastion" {
+  source = "./Modules/route_table"
+  cidr_range = module.vpc_b.cidr_block
+  vpc_id = module.vpc_b.id
+  route = [
+    {
+      cidr_block="0.0.0.0/0"
+      gateway_id=module.internet_gateway_b.id
+    }
+  ]
+  tags_value = merge(var.bastion_tags,local.tags)
+}
+
+################################
+#Bastion subnet declaration
+################################
+
+module "subnet_bastion" {
+  source = "./Modules/subnet"
+  vpc_id = module.vpc_b.id
+  cidr_range = "10.0.0.0/24"
+  subnet_az = "ap-south-1b"
+  is_public = true
+  tags_value = merge(var.bastion_tags,local.tags)
+}
+
+module "rt_subnet_bastion_link" {
+  source = "./Modules/rt_subnet_link"
+  subnet_id = module.subnet_bastion.id
+  route_table_id = module.route_table_bastion.id
 }
