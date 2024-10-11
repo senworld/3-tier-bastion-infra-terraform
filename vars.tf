@@ -95,3 +95,15 @@ variable "bastion_sg_egress_rules" {
  type = any 
  default = null
 }
+
+variable "ec2_web" {
+  type = any
+}
+
+# variable "ec2_app" {
+#   type = any
+# }
+
+# variable "ec2_db" {
+#   type = any
+# }

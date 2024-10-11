@@ -24,7 +24,13 @@ module "route_table_web" {
   route = [
     {
       cidr_block="0.0.0.0/0"
+      vpc_peering_connection_id=null
       gateway_id=module.internet_gateway_a.id
+    },
+    {
+      cidr_block= "10.0.0.0/16"
+      gateway_id= null
+      vpc_peering_connection_id= module.vpc_ab_peer.id
     }
   ]
   tags_value = merge(var.web_tags,local.tags)
@@ -136,6 +142,12 @@ module "route_table_bastion" {
     {
       cidr_block="0.0.0.0/0"
       gateway_id=module.internet_gateway_b.id
+      vpc_peering_connection_id=null
+    },
+    {
+      cidr_block= "192.168.0.0/16"
+      gateway_id= null
+      vpc_peering_connection_id= module.vpc_ab_peer.id
     }
   ]
   tags_value = merge(var.bastion_tags,local.tags)
@@ -158,4 +170,15 @@ module "rt_subnet_bastion_link" {
   source = "./Modules/rt_subnet_link"
   subnet_id = module.subnet_bastion.id
   route_table_id = module.route_table_bastion.id
+}
+
+################################
+#Bastion and root vpc peer
+################################
+
+module "vpc_ab_peer" {
+  source = "./Modules/vpc_peering"
+  vpc_a_id = module.vpc_a.id
+  vpc_b_id = module.vpc_b.id
+  tags_value = merge({Name = "Bastion & Root Peer"},local.tags)
 }

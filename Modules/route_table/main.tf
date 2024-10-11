@@ -7,11 +7,13 @@ resource "aws_route_table" "route_table" {
   }
   
   dynamic "route" {
-    for_each = var.route != null? var.route : []
+    for_each = var.route
     content {
       cidr_block = route.value["cidr_block"]
       gateway_id = route.value["gateway_id"]
+      vpc_peering_connection_id = route.value["vpc_peering_connection_id"]
     }
   }
+  
   tags = var.tags_value
 }

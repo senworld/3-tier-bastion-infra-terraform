@@ -2,7 +2,7 @@ subnet_web = [
     {
       cidr_range = "192.168.1.0/24"
       subnet_az = "ap-south-1a"
-      is_public = true
+      is_public = false
       tags_value = {
         Name = "subnet_a"
         Tier = "Web"
@@ -11,7 +11,7 @@ subnet_web = [
     {
       cidr_range = "192.168.2.0/24"
       subnet_az = "ap-south-1b"
-      is_public = true
+      is_public = false
       tags_value = {
         Name = "subnet_b"
         Tier = "Web"
@@ -114,6 +114,17 @@ web_sg_ingress_rules = [
     prefix_list_ids = []
     security_groups = []
     self = false
+  },
+  {
+    description = "Allow SHH from Bastion"
+    cidr_blocks = ["10.0.0.0/24"]
+    protocol = "tcp"
+    from_port = "22"
+    to_port = "22"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
   }
 ]
 
@@ -156,5 +167,18 @@ bastion_sg_egress_rules = [
     prefix_list_ids = []
     security_groups = []
     self = false
+  }
+]
+
+ec2_web = [
+  {
+    image_name = ["debian-12-amd64-20240717-1811"]
+    owner = ["amazon"]
+    instance_size = "t2.micro"
+  },
+  {
+    image_name = ["debian-12-amd64-20240717-1811"]
+    owner = ["amazon"]
+    instance_size = "t2.micro"
   }
 ]

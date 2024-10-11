@@ -43,7 +43,7 @@ module "security_group_bastion_a" {
   source = "./Modules/security_group"
   vpc_id = module.vpc_b.id
   sg_name = "security_group_bastion_a"
-  ingress_rule = jsondecode(jsonencode(var.web_sg_ingress_rules))
-  egress_rule = jsondecode(jsonencode(var.web_sg_egress_rules))
+  ingress_rule = jsondecode(jsonencode(var.bastion_sg_ingress_rules))
+  egress_rule = jsondecode(jsonencode(var.bastion_sg_egress_rules))
   tags_value = merge(var.bastion_tags,local.tags)
 }
