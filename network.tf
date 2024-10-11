@@ -113,6 +113,20 @@ module "rt_subnet_db_link" {
   count = length(var.subnet_db)
 }
 
+##################################
+# Application Loadbalancer declaration
+##################################
+
+module "loadbalance_web" {
+  source = "./Modules/load_balancer"
+  sg_list = [ module.security_group_alb_a.sg_id ]
+  subnet_list = [ for subnet in module.subnet_web: subnet.id ]
+  lb_listening_port = 80
+  lb_protocol = "HTTP"
+  target_groups =  [for groups in module.target_group_web: groups.arn]
+  tags_value = merge(var.web_tags,local.tags) 
+}
+
 #================================================X================================================#
 
 ##################################

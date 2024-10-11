@@ -21,6 +21,18 @@ module "security_group_web_a" {
   tags_value = merge(var.web_tags,local.tags)
 }
 
+###################################
+#LoadBalancer Security Group declaration
+###################################
+
+module "security_group_alb_a" {
+  source = "./Modules/security_group"
+  vpc_id = module.vpc_a.id
+  sg_name = "security_group_alb_a"
+  ingress_rule = jsondecode(jsonencode(var.alb_ingress_rules))
+  egress_rule = jsondecode(jsonencode(var.alb_egress_rules))
+  tags_value = merge({ Name="${var.web_tags["Name"]}-sg-alb"},local.tags)
+}
 
 #================================================X================================================#
 

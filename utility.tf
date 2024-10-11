@@ -19,3 +19,4 @@ module "ssh_key_b" {
   public_key = module.ssh_key_gen_b.public_key
   tags_value = merge(var.root_tags,local.tags)
 }
+

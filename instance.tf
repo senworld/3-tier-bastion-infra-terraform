@@ -14,6 +14,17 @@ module "ec2_web" {
   count = length(var.ec2_web)
 }
 
+module "target_group_web" {
+  source = "./Modules/target_group"
+  target_port = 8080
+  protocol = "HTTP"
+  vpc_id = module.vpc_a.id
+  ec2_id = module.ec2_web[count.index].ec2_id
+  listening_port = 8080
+  tags_value = merge(var.web_tags,local.tags)
+  count = length(var.ec2_web)
+}
+
 #================================================X================================================#
 
 ################################

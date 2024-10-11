@@ -86,6 +86,16 @@ variable "web_sg_egress_rules" {
 #   type = any
 # }
 
+variable "alb_ingress_rules" {
+ type = any 
+ default = null
+}
+
+variable "alb_egress_rules" {
+ type = any 
+ default = null
+}
+
 variable "bastion_sg_ingress_rules" {
  type = any 
  default = null

@@ -108,8 +108,8 @@ web_sg_ingress_rules = [
     description = "Allow HTTP"
     cidr_blocks = ["0.0.0.0/0"]
     protocol = "tcp"
-    from_port = "80"
-    to_port = "80"
+    from_port = "8080"
+    to_port = "8080"
     ipv6_cidr_blocks = []
     prefix_list_ids = []
     security_groups = []
@@ -141,6 +141,22 @@ web_sg_egress_rules = [
     self = false
   }
 ]
+
+alb_ingress_rules = [
+  {
+    description = "Allow HTTP"
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol = "tcp"
+    from_port = "80"
+    to_port = "80"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
+alb_egress_rules = []
 
 bastion_sg_ingress_rules = [
   {
