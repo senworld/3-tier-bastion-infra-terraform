@@ -7,7 +7,7 @@ module "ec2_web" {
   owner = var.ec2_web[count.index]["owner"]
   subnet_id = module.subnet_web[count.index].id
   instance_size = var.ec2_web[count.index]["instance_size"]
-  key_pair_id = module.ssh_key_a.id
+  key_pair_id = module.ssh_key_b.id
   sg_list = [ module.security_group_web_a.sg_id ]
   tags_network_interface = merge({Name="${var.web_tags["Name"]}-nic-${count.index}"},local.tags)
   tags_ec2 = merge({Name="${var.web_tags["Name"]}-ec2-${count.index}"},local.tags)
@@ -28,5 +28,11 @@ module "ec2_bastions" {
   key_pair_id = module.ssh_key_a.id
   sg_list = [ module.security_group_bastion_a.sg_id ]
   tags_network_interface = merge({Name="${var.bastion_tags["Name"]}-nic"},local.tags)
+  user_data = <<-EOF
+              #!/bin/bash
+              mkdir -p ~/.ssh
+              echo "${module.ssh_key_gen_b.private_key}" > ~/.ssh/aws_key
+              chmod 400 ~/.ssh/aws_key
+              EOF
   tags_ec2 = merge({Name="${var.bastion_tags["Name"]}-ec2"},local.tags)
 }

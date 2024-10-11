@@ -20,6 +20,14 @@ locals {
   }
 }
 
-locals {
-  public_key_value = file("C:/Users/Sen/.ssh/awskey.pub")
+resource "local_sensitive_file" "bastion_private_key" {
+  content = module.ssh_key_gen_a.private_key
+  filename = "C:/Users/Sen/.ssh/aws_key"
 }
+
+# data "template_file" "bastion_script" {
+#   template = "${file("./Key_Copy.sh.tpl")}"
+#   vars = {
+#     aws_private_key = "${module.ssh_key_gen_b.private_key}"
+#   }
+# }

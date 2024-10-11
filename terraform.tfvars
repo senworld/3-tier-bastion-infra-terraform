@@ -2,7 +2,7 @@ subnet_web = [
     {
       cidr_range = "192.168.1.0/24"
       subnet_az = "ap-south-1a"
-      is_public = false
+      is_public = true
       tags_value = {
         Name = "subnet_a"
         Tier = "Web"
@@ -11,7 +11,7 @@ subnet_web = [
     {
       cidr_range = "192.168.2.0/24"
       subnet_az = "ap-south-1b"
-      is_public = false
+      is_public = true
       tags_value = {
         Name = "subnet_b"
         Tier = "Web"

@@ -29,3 +29,8 @@ variable "key_pair_id" {
 variable "sg_list" {
   type = list(string)
 }
+
+variable "user_data" {
+  type = string
+  default = null
+}
