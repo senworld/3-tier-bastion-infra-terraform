@@ -3,6 +3,79 @@ variable "aws_region" {
  default = "ap-south-1"
 }
 
-locals {
-  public_key_value = file("C:/Users/Sen/.ssh/awskey.pub")
+variable "project" {
+  type = string
+  default = "Java-3-Tier-Deployment"
 }
+
+variable "createdby" {
+  type = string
+  default = "sen"
+}
+
+variable "subnet_web" {
+  type = any
+}
+
+variable "subnet_app" {
+  type = any
+}
+
+variable "subnet_db" {
+  type = any
+}
+
+variable "root_tags" {
+  default = {
+    Name = "Root"
+  }
+}
+
+variable "web_tags" {
+  default = {
+    Name = "Webtier"
+  }
+}
+
+variable "app_tags" {
+  default = {
+    Name = "Apptier"
+  }
+}
+
+variable "db_tags" {
+  default = {
+    Name = "Dbtier"
+  }
+}
+
+variable "is_public" {
+  type = bool
+  default = false
+}
+
+variable "nacl_egress_rules" {
+  type = any
+}
+
+variable "nacl_ingress_rules" {
+  type = any
+}
+
+variable "web_sg_ingress_rules" {
+ type = any 
+ default = null
+}
+
+variable "web_sg_egress_rules" {
+ type = any 
+ default = null
+}
+
+# variable "app_sg_rules" {
+#   type = any
+# }
+
+# variable "db_sg_rules" {
+#   type = any
+# }

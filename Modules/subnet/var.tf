@@ -13,3 +13,8 @@ variable "subnet_az" {
 variable "tags_value" {
     type = map(string)
 }
+
+variable "is_public" {
+  type = bool
+  default = false
+}

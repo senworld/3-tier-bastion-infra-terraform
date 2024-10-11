@@ -9,3 +9,13 @@ variable "sg_name" {
 variable "tags_value" {
   type = map(string)
 }
+
+variable "ingress_rule" {
+  type = any
+  default = null
+}
+
+variable "egress_rule" {
+  type = any
+  default = null
+}
