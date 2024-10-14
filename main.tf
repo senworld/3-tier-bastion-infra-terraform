@@ -24,6 +24,12 @@ resource "local_sensitive_file" "bastion_private_key" {
   content = module.ssh_key_gen_a.private_key
   filename = "C:/Users/Sen/.ssh/aws_key"
 }
+
+resource "local_sensitive_file" "application_private_key" {
+  content = module.ssh_key_gen_b.private_key
+  filename = "C:/Users/Sen/.ssh/app_key"
+}
+
 resource "local_file" "ec2_ips" {
   content = "bastion public_ip: ${module.ec2_bastions.public_ip}\nalb_dns_name: ${module.loadbalance_web.alb_dns_name}"
   filename = "C:/Users/Sen/Desktop/ips.txt"

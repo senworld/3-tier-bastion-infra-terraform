@@ -8,7 +8,7 @@ module "ec2_web_autoscaled" {
   subnet_id = [for o in module.subnet_web: o.id]
   instance_size = var.ec2_web["instance_size"]
   key_pair_id = module.ssh_key_b.id
-  is_public = true
+  is_public = false
   sg_list = [ module.security_group_web_a.sg_id ]
   max_size = 3
   min_size = 1

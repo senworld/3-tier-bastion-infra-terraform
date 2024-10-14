@@ -1,3 +1,18 @@
+######################################
+# NAT gateway on vpc_a declaration
+######################################
+
+module "nat_gateway_public" {
+  source = "./Modules/nat_gateway"
+  subnet_id = module.subnet_public[0].id
+  elastic_ip_id = module.eip_nat.id
+  depends_on = [ module.internet_gateway_a ]
+}
+
+module "eip_nat" {
+  source = "./Modules/elastic_ip"
+}
+
 #================================================X================================================#
 
 ################################
@@ -41,3 +56,4 @@ module "loadbalance_web" {
 }
 
 #================================================X================================================#
+

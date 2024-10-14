@@ -17,20 +17,40 @@ module "internet_gateway_a"{
 #Route table vpc_a declaration
 ################################
 
+module "route_table_public" {
+  source = "./Modules/route_table"
+  cidr_range = module.vpc_a.cidr_block
+  vpc_id = module.vpc_a.id
+  route = [
+    {
+      destination_cidr_block="0.0.0.0/0"
+      gateway_id=module.internet_gateway_a.id
+      nat_gateway_id = null
+      vpc_peering_connection_id = null
+      vpc_endpoint_id = null
+    }
+  ]
+  tags_value = merge({Name="Public"},local.tags)
+}
+
 module "route_table_web" {
   source = "./Modules/route_table"
   cidr_range = module.vpc_a.cidr_block
   vpc_id = module.vpc_a.id
   route = [
     {
-      cidr_block="0.0.0.0/0"
-      vpc_peering_connection_id=null
-      gateway_id=module.internet_gateway_a.id
+      destination_cidr_block="0.0.0.0/0"
+      nat_gateway_id= module.nat_gateway_public.id
+      gateway_id = null
+      vpc_peering_connection_id = null
+      vpc_endpoint_id = null
     },
     {
-      cidr_block= "10.0.0.0/16"
-      gateway_id= null
+      destination_cidr_block= "10.0.0.0/16"
       vpc_peering_connection_id= module.vpc_ab_peer.id
+      gateway_id = null
+      nat_gateway_id = null
+      vpc_endpoint_id = null
     }
   ]
   tags_value = merge(var.web_tags,local.tags)
@@ -50,6 +70,26 @@ module "route_table_db" {
   vpc_id = module.vpc_a.id
   route = []
   tags_value = merge(var.db_tags,local.tags)
+}
+
+################################
+#Public subnet declaration
+################################
+module "subnet_public" {
+  source = "./Modules/subnet"
+  vpc_id = module.vpc_a.id
+  cidr_range = var.subnet_public[count.index]["cidr_range"]
+  subnet_az = var.subnet_public[count.index]["subnet_az"]
+  tags_value = merge(var.subnet_public[count.index]["tags_value"],local.tags)
+  is_public = var.subnet_public[count.index]["is_public"]
+  count = length(var.subnet_public)
+}
+
+module "rt_subnet_public_link" {
+  source = "./Modules/rt_subnet_link"
+  subnet_id = module.subnet_public[count.index].id
+  route_table_id = module.route_table_public.id
+  count = length(var.subnet_public)
 }
 
 ################################
@@ -140,14 +180,18 @@ module "route_table_bastion" {
   vpc_id = module.vpc_b.id
   route = [
     {
-      cidr_block="0.0.0.0/0"
+      destination_cidr_block="0.0.0.0/0"
       gateway_id=module.internet_gateway_b.id
-      vpc_peering_connection_id=null
+      nat_gateway_id = null
+      vpc_peering_connection_id = null
+      vpc_endpoint_id = null
     },
     {
-      cidr_block= "192.168.0.0/16"
-      gateway_id= null
+      destination_cidr_block= "192.168.0.0/16"
       vpc_peering_connection_id= module.vpc_ab_peer.id
+      gateway_id = null
+      nat_gateway_id = null
+      vpc_endpoint_id = null
     }
   ]
   tags_value = merge(var.bastion_tags,local.tags)

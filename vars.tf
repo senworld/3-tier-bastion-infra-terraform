@@ -13,6 +13,10 @@ variable "createdby" {
   default = "sen"
 }
 
+variable "subnet_public" {
+  type = any
+}
+
 variable "subnet_web" {
   type = any
 }

@@ -1,4 +1,4 @@
-resource "aws_eip" "nic" {
+resource "aws_eip" "eip" {
   instance = var.ec2_id
   domain   = "vpc"
   tags = var.tags_value
