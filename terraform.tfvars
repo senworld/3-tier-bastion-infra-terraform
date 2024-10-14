@@ -106,10 +106,10 @@ nacl_ingress_rules = [
 web_sg_ingress_rules = [
   {
     description = "Allow HTTP"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["192.168.0.0/16"]
     protocol = "tcp"
-    from_port = "8080"
-    to_port = "8080"
+    from_port = "80"
+    to_port = "80"
     ipv6_cidr_blocks = []
     prefix_list_ids = []
     security_groups = []
@@ -156,7 +156,19 @@ alb_ingress_rules = [
   }
 ]
 
-alb_egress_rules = []
+alb_egress_rules = [
+  {
+    description = "Allow all Outbound"
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol = "tcp"
+    from_port = "80"
+    to_port = "80"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
 
 bastion_sg_ingress_rules = [
   {
@@ -186,15 +198,8 @@ bastion_sg_egress_rules = [
   }
 ]
 
-ec2_web = [
-  {
-    image_name = ["debian-12-amd64-20240717-1811"]
-    owner = ["amazon"]
-    instance_size = "t2.micro"
-  },
-  {
+ec2_web = {
     image_name = ["debian-12-amd64-20240717-1811"]
     owner = ["amazon"]
     instance_size = "t2.micro"
   }
-]

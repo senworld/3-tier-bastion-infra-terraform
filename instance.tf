@@ -1,28 +1,22 @@
 ################################
 #Web ec2 declaration
 ################################
-module "ec2_web" {
-  source = "./Modules/ec2_instance"
-  image_name = var.ec2_web[count.index]["image_name"]
-  owner = var.ec2_web[count.index]["owner"]
-  subnet_id = module.subnet_web[count.index].id
-  instance_size = var.ec2_web[count.index]["instance_size"]
+module "ec2_web_autoscaled" {
+  source = "./Modules/ec2_autoscaled"
+  image_name = var.ec2_web["image_name"]
+  owner = var.ec2_web["owner"]
+  subnet_id = [for o in module.subnet_web: o.id]
+  instance_size = var.ec2_web["instance_size"]
   key_pair_id = module.ssh_key_b.id
+  is_public = true
   sg_list = [ module.security_group_web_a.sg_id ]
-  tags_network_interface = merge({Name="${var.web_tags["Name"]}-nic-${count.index}"},local.tags)
-  tags_ec2 = merge({Name="${var.web_tags["Name"]}-ec2-${count.index}"},local.tags)
-  count = length(var.ec2_web)
-}
-
-module "target_group_web" {
-  source = "./Modules/target_group"
-  target_port = 8080
-  protocol = "HTTP"
-  vpc_id = module.vpc_a.id
-  ec2_id = module.ec2_web[count.index].ec2_id
-  listening_port = 8080
-  tags_value = merge(var.web_tags,local.tags)
-  count = length(var.ec2_web)
+  max_size = 3
+  min_size = 1
+  desired_capacity = 2
+  target_group_arn = toset([module.target_group_web.arn])
+  user_data = "${base64encode(data.template_file.ec2_web_userdata.rendered)}"
+  launch_template_name = "ec2_web_template"
+  autoscale_group_name = "ec2_web_autoscaled"
 }
 
 #================================================X================================================#

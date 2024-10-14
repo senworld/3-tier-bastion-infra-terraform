@@ -6,15 +6,7 @@ variable "image_name" {
   type = list(string)
 }
 
-variable "tags_value" {
-  type = map(string)
-}
-
 variable "instance_size" {
-  type = string
-}
-
-variable "subnet_id" {
   type = string
 }
 
@@ -26,7 +18,7 @@ variable "sg_list" {
   type = list(string)
 }
 
-variable "is_ip_public" {
+variable "is_public" {
   type = bool
 }
 
@@ -42,11 +34,22 @@ variable "desired_capacity" {
   type = number
 }
 
-variable "health_check_type" {
-  type = string
-}
-
 variable "subnet_id" {
   type = list(string)
 }
 
+variable "user_data" {
+  type = string
+}
+
+variable "target_group_arn" {
+  type = set(string)
+}
+
+variable "autoscale_group_name" {
+  type = string
+}
+
+variable "launch_template_name" {
+  type = string
+}
