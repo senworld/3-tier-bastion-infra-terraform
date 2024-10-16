@@ -1,28 +1,20 @@
 ######################################
-# NAT gateway on vpc_a declaration
+# NAT gateway on vpc_main declaration
 ######################################
-
-module "nat_gateway_public" {
+module "nat_gateway_main" {
   source = "./Modules/nat_gateway"
-  subnet_id = module.subnet_public[0].id
-  elastic_ip_id = module.eip_nat.id
-  depends_on = [ module.internet_gateway_a ]
+  subnet_id = local.public_subnets[0]
 }
-
-module "eip_nat" {
-  source = "./Modules/elastic_ip"
-}
-
 #================================================X================================================#
 
 ################################
 #Bastion and root vpc peer
 ################################
 
-module "vpc_ab_peer" {
+module "vpc_peer" {
   source = "./Modules/vpc_peering"
-  vpc_a_id = module.vpc_a.id
-  vpc_b_id = module.vpc_b.id
+  vpc_a_id = module.vpc_main.id
+  vpc_b_id = module.vpc_bastion.id
   tags_value = merge({Name = "Bastion & Root Peer"},local.tags)
 }
 
@@ -35,7 +27,7 @@ module "target_group_web" {
   source = "./Modules/target_group"
   target_port = 80
   protocol = "HTTP"
-  vpc_id = module.vpc_a.id
+  vpc_id = module.vpc_main.id
   tags_value = merge(var.web_tags,local.tags)
 }
 
@@ -48,7 +40,7 @@ module "target_group_web" {
 module "loadbalance_web" {
   source = "./Modules/load_balancer"
   sg_list = [ module.security_group_alb_a.sg_id ]
-  subnet_list = [ for subnet in module.subnet_web: subnet.id ]
+  subnet_list = local.public_subnets
   lb_listening_port = 80
   lb_protocol = "HTTP"
   target_groups =  [module.target_group_web.arn]

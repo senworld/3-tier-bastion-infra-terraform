@@ -13,19 +13,11 @@ variable "createdby" {
   default = "sen"
 }
 
-variable "subnet_public" {
+variable "subnet_main" {
   type = any
 }
 
-variable "subnet_web" {
-  type = any
-}
-
-variable "subnet_app" {
-  type = any
-}
-
-variable "subnet_db" {
+variable "subnet_bastion" {
   type = any
 }
 

@@ -1,13 +1,13 @@
-variable "tags_value" {
+variable "tags" {
     type = map(string)
-}
-
-variable "cidr_range" {
-    type = string
 }
 
 variable "vpc_id" {
     type = string
+}
+
+variable "subnet_id" {
+  type = list(string)
 }
 
 variable "route" {

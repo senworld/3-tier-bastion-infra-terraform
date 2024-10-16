@@ -1,96 +1,80 @@
-subnet_public = [
+subnet_main = [
+    
     {
-      cidr_range = "192.168.254.0/24"
+      cidr_range = "192.168.253.0/24"
       subnet_az = "ap-south-1a"
       is_public = true
-      tags_value = {
-        Name = "subnet_z"
-        Tier = "Public"
+      tags = {
+        Name = "public_a"
       }
-    }
-]
-
-subnet_web = [
+    },
+    {
+      cidr_range = "192.168.254.0/24"
+      subnet_az = "ap-south-1b"
+      is_public = true
+      tags = {
+        Name = "public_b"
+      }
+    },
     {
       cidr_range = "192.168.1.0/24"
       subnet_az = "ap-south-1a"
       is_public = false
-      tags_value = {
-        Name = "subnet_a"
-        Tier = "Web"
+      tags = {
+        Name = "web_a"
       }
     },
     {
       cidr_range = "192.168.2.0/24"
       subnet_az = "ap-south-1b"
       is_public = false
-      tags_value = {
-        Name = "subnet_b"
-        Tier = "Web"
+      tags = {
+        Name = "web_b"
       }
-    }              
-    # ,{
-    #   cidr_range = "192.168.3.0/24"
-    #   subnet_az = "ap-south-1c"
-    #   tags_value = {
-    #     Name = "subnet_c"
-    #     Tier = "Web"
-    #   }
-    # }
-]
-
-subnet_app = [
-    {
+    },
+      {
       cidr_range = "192.168.4.0/24"
       subnet_az = "ap-south-1a"
-      tags_value = {
-        Name = "subnet_d"
-        Tier = "App"
+      is_public = false
+      tags = {
+        Name = "app_a"
       }
     },
     {
       cidr_range = "192.168.5.0/24"
       subnet_az = "ap-south-1b"
-      tags_value = {
-        Name = "subnet_e"
-        Tier = "App"
+      is_public = false
+      tags = {
+        Name = "app_b"
       }
-    }
-    # ,{
-    #   cidr_range = "192.168.6.0/24"
-    #   subnet_az = "ap-south-1c"
-    #   tags_value = {
-    #     Name = "subnet_f"
-    #     Tier = "App"
-    #   }
-    # }
-]
-
-subnet_db = [
+    },
     {
       cidr_range = "192.168.7.0/24"
       subnet_az = "ap-south-1a"
-      tags_value = {
-        Name = "subnet_g"
-        Tier = "Db"
+      is_public = false
+      tags = {
+        Name = "db_a"
       }
     },
     {
       cidr_range = "192.168.8.0/24"
       subnet_az = "ap-south-1b"
-      tags_value = {
-        Name = "subnet_h"
-        Tier = "Db"
+      is_public = false
+      tags = {
+        Name = "db_b"
       }
     }
-    # ,{
-    #   cidr_range = "192.168.9.0/24"
-    #   subnet_az = "ap-south-1c"
-    #   tags_value = {
-    #     Name = "subnet_i"
-    #     Tier = "Db"
-    #   }
-    # }
+]
+
+subnet_bastion = [
+    {
+      cidr_range = "10.0.0.0/24"
+      subnet_az = "ap-south-1b"
+      is_public = true
+      tags = {
+        Name = "bastion"
+      }
+    }
 ]
 
 nacl_egress_rules = [

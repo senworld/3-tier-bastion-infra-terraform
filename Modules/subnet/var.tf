@@ -10,11 +10,10 @@ variable "subnet_az" {
     type = string
 }
 
-variable "tags_value" {
-    type = map(string)
+variable "is_public" {
+    type = string
 }
 
-variable "is_public" {
-  type = bool
-  default = false
+variable "tags" {
+    type = map(string)
 }
