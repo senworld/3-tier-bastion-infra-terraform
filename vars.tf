@@ -51,6 +51,12 @@ variable "db_tags" {
   }
 }
 
+variable "jenkins_tags" {
+  default = {
+    Name = "Jenkins"
+  }
+}
+
 variable "is_public" {
   type = bool
   default = false
@@ -74,13 +80,25 @@ variable "web_sg_egress_rules" {
  default = null
 }
 
-# variable "app_sg_rules" {
-#   type = any
-# }
+variable "app_sg_ingress_rules" {
+ type = any 
+ default = null
+}
 
-# variable "db_sg_rules" {
-#   type = any
-# }
+variable "app_sg_egress_rules" {
+ type = any 
+ default = null
+}
+
+variable "db_sg_ingress_rules" {
+ type = any 
+ default = null
+}
+
+variable "db_sg_egress_rules" {
+ type = any 
+ default = null
+}
 
 variable "alb_ingress_rules" {
  type = any 
@@ -102,14 +120,28 @@ variable "bastion_sg_egress_rules" {
  default = null
 }
 
+variable "jenkins_sg_ingress_rules" {
+ type = any 
+ default = null
+}
+
+variable "jenkins_sg_egress_rules" {
+ type = any 
+ default = null
+}
+
 variable "ec2_web" {
   type = any
 }
 
-# variable "ec2_app" {
-#   type = any
-# }
+variable "ec2_app" {
+  type = any
+}
 
-# variable "ec2_db" {
-#   type = any
-# }
+variable "ec2_db" {
+  type = any
+}
+
+variable "ec2_jenkins" {
+  type = any
+}

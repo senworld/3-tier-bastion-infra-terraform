@@ -21,6 +21,42 @@ module "security_group_web_a" {
   tags_value = merge(var.web_tags,local.tags)
 }
 
+###################################
+#Apptier Security Group declaration
+###################################
+module "security_group_app_a" {
+  source = "./Modules/security_group"
+  vpc_id = module.vpc_main.id
+  sg_name = "security_group_app_a"
+  ingress_rule = jsondecode(jsonencode(var.app_sg_ingress_rules))
+  egress_rule = jsondecode(jsonencode(var.app_sg_egress_rules))
+  tags_value = merge(var.app_tags,local.tags)
+}
+
+###################################
+#DBtier Security Group declaration
+###################################
+module "security_group_db_a" {
+  source = "./Modules/security_group"
+  vpc_id = module.vpc_main.id
+  sg_name = "security_group_db_a"
+  ingress_rule = jsondecode(jsonencode(var.db_sg_ingress_rules))
+  egress_rule = jsondecode(jsonencode(var.db_sg_egress_rules))
+  tags_value = merge(var.db_tags,local.tags)
+}
+
+###################################
+#Jenkins Security Group declaration
+###################################
+module "security_group_jenkins" {
+  source = "./Modules/security_group"
+  vpc_id = module.vpc_main.id
+  sg_name = "security_group_jenkins"
+  ingress_rule = jsondecode(jsonencode(var.jenkins_sg_ingress_rules))
+  egress_rule = jsondecode(jsonencode(var.jenkins_sg_egress_rules))
+  tags_value = merge(var.jenkins_tags,local.tags)
+}
+
 #================================================X================================================#
 
 ################################

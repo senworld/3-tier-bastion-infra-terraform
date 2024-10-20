@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "5.72.1"
     }
   }
 }
@@ -31,7 +31,7 @@ resource "local_sensitive_file" "application_private_key" {
 }
 
 resource "local_file" "ec2_ips" {
-  content = "bastion public_ip: ${module.ec2_bastions.public_ip}\nalb_dns_name: ${module.loadbalance_web.alb_dns_name}"
+  content = "bastion public_ip: ${module.ec2_bastions.public_ip}\nalb_dns_name: {module.loadbalance_web.alb_dns_name}"
   filename = "C:/Users/Sen/Desktop/ips.txt"
 }
 

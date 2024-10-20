@@ -44,6 +44,7 @@ variable "user_data" {
 
 variable "target_group_arn" {
   type = set(string)
+  default = null
 }
 
 variable "autoscale_group_name" {
@@ -51,5 +52,9 @@ variable "autoscale_group_name" {
 }
 
 variable "launch_template_name" {
+  type = string
+}
+
+variable "ec2_name" {
   type = string
 }

@@ -59,13 +59,18 @@ locals {
     module.subnet_bastion["bastion"].id
   ]
 
+  jenkins_subnets=[
+    module.subnet_main["jenkins"].id
+  ]
+
   private_subnets=[
     module.subnet_main["web_a"].id,
     module.subnet_main["web_b"].id,
     module.subnet_main["app_a"].id,
     module.subnet_main["app_b"].id,
     module.subnet_main["db_a"].id,
-    module.subnet_main["db_b"].id
+    module.subnet_main["db_b"].id,
+    module.subnet_main["jenkins"].id
   ]
 
   web_subnets=[

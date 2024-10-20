@@ -52,5 +52,11 @@ resource "aws_autoscaling_group" "autoscale_group" {
 
   metrics_granularity = "1Minute"
 
+  tag {
+    key                 = "Name"
+    value               = "${var.ec2_name}"
+    propagate_at_launch = true
+  }
+
   depends_on = [ aws_launch_template.ec2_template ]
 }

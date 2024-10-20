@@ -28,7 +28,7 @@ module "subnet_main" {
 }
 
 ################################
-#Public route declaration
+#Route declaration
 ################################
 
 module "route_table_public" {

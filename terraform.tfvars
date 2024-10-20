@@ -63,6 +63,14 @@ subnet_main = [
       tags = {
         Name = "db_b"
       }
+    },
+    {
+      cidr_range = "192.168.9.0/24"
+      subnet_az = "ap-south-1a"
+      is_public = false
+      tags = {
+        Name = "jenkins"
+      }
     }
 ]
 
@@ -138,6 +146,84 @@ web_sg_egress_rules = [
   }
 ]
 
+app_sg_ingress_rules = [
+  {
+    description = "Allow access to webapp"
+    cidr_blocks = ["192.168.0.0/16"]
+    protocol = "tcp"
+    from_port = "8080"
+    to_port = "8080"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  },
+  {
+    description = "Allow SHH from Bastion"
+    cidr_blocks = ["10.0.0.0/24"]
+    protocol = "tcp"
+    from_port = "22"
+    to_port = "22"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
+app_sg_egress_rules = [
+  {
+    description = "Allow all Outbound"
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol = "-1"
+    from_port = "0"
+    to_port = "0"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
+db_sg_ingress_rules = [
+  {
+    description = "Allow access to DB"
+    cidr_blocks = ["192.168.0.0/16"]
+    protocol = "tcp"
+    from_port = "3000"
+    to_port = "3000"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  },
+  {
+    description = "Allow SHH from Bastion"
+    cidr_blocks = ["10.0.0.0/24"]
+    protocol = "tcp"
+    from_port = "22"
+    to_port = "22"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
+db_sg_egress_rules = [
+  {
+    description = "Allow all Outbound"
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol = "-1"
+    from_port = "0"
+    to_port = "0"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
 alb_ingress_rules = [
   {
     description = "Allow HTTP"
@@ -194,7 +280,53 @@ bastion_sg_egress_rules = [
   }
 ]
 
+jenkins_sg_ingress_rules = [
+  {
+    description = "Allow SHH"
+    cidr_blocks = ["10.0.0.0/16"]
+    protocol = "tcp"
+    from_port = "22"
+    to_port = "22"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
+jenkins_sg_egress_rules = [
+  {
+    description = "Allow all Outbound"
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol = "-1"
+    from_port = "0"
+    to_port = "0"
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }
+]
+
 ec2_web = {
+    image_name = ["debian-12-amd64-20240717-1811"]
+    owner = ["amazon"]
+    instance_size = "t2.micro"
+  }
+
+ec2_app = {
+    image_name = ["debian-12-amd64-20240717-1811"]
+    owner = ["amazon"]
+    instance_size = "t2.micro"
+  }
+
+ec2_db = {
+    image_name = ["debian-12-amd64-20240717-1811"]
+    owner = ["amazon"]
+    instance_size = "t2.micro"
+  }
+
+ec2_jenkins = {
     image_name = ["debian-12-amd64-20240717-1811"]
     owner = ["amazon"]
     instance_size = "t2.micro"

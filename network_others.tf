@@ -37,15 +37,15 @@ module "target_group_web" {
 # Application Loadbalancer declaration
 ######################################
 
-module "loadbalance_web" {
-  source = "./Modules/load_balancer"
-  sg_list = [ module.security_group_alb_a.sg_id ]
-  subnet_list = local.public_subnets
-  lb_listening_port = 80
-  lb_protocol = "HTTP"
-  target_groups =  [module.target_group_web.arn]
-  tags_value = merge(var.web_tags,local.tags) 
-}
+# module "loadbalance_web" {
+#   source = "./Modules/load_balancer"
+#   sg_list = [ module.security_group_alb_a.sg_id ]
+#   subnet_list = local.public_subnets
+#   lb_listening_port = 80
+#   lb_protocol = "HTTP"
+#   target_groups =  [module.target_group_web.arn]
+#   tags_value = merge(var.web_tags,local.tags) 
+# }
 
 #================================================X================================================#
 
