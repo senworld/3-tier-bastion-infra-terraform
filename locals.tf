@@ -1,4 +1,11 @@
 locals {
+  tags = {
+    createdby   = var.createdby
+    CreatedOn   = timestamp()
+    project     = var.project
+    Environment = terraform.workspace
+  }
+  
   public_route=[
     {
       destination_cidr_block = "0.0.0.0/0"
@@ -59,8 +66,8 @@ locals {
     module.subnet_bastion["bastion"].id
   ]
 
-  jenkins_subnets=[
-    module.subnet_main["jenkins"].id
+  automation_subnets=[
+    module.subnet_main["automation"].id
   ]
 
   private_subnets=[
@@ -70,7 +77,7 @@ locals {
     module.subnet_main["app_b"].id,
     module.subnet_main["db_a"].id,
     module.subnet_main["db_b"].id,
-    module.subnet_main["jenkins"].id
+    module.subnet_main["automation"].id
   ]
 
   web_subnets=[

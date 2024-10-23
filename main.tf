@@ -11,28 +11,26 @@ provider "aws" {
   region = var.aws_region
 }
 
-locals {
-  tags = {
-    createdby   = var.createdby
-    CreatedOn   = timestamp()
-    project     = var.project
-    Environment = terraform.workspace
-  }
-}
-
 resource "local_sensitive_file" "bastion_private_key" {
   content = module.ssh_key_gen_a.private_key
-  filename = "C:/Users/Sen/.ssh/aws_key"
+  filename = "${path.module}/aws_key"
 }
 
 resource "local_sensitive_file" "application_private_key" {
   content = module.ssh_key_gen_b.private_key
-  filename = "C:/Users/Sen/.ssh/app_key"
+  filename = "${path.module}/.ssh/app_key"
 }
 
-resource "local_file" "ec2_ips" {
-  content = "bastion public_ip: ${module.ec2_bastions.public_ip}\nalb_dns_name: {module.loadbalance_web.alb_dns_name}"
-  filename = "C:/Users/Sen/Desktop/ips.txt"
+resource "random_password" "db_password" {
+  length  = 16 
+  special = true
+  upper   = true
+  lower   = true
+}
+
+resource "local_file" "password_file" {
+  filename = "${path.module}/db_password.txt" 
+  content  = random_password.db_password.result
 }
 
 data "template_file" "ec2_web_userdata" {

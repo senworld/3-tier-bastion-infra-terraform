@@ -69,7 +69,7 @@ subnet_main = [
       subnet_az = "ap-south-1a"
       is_public = false
       tags = {
-        Name = "jenkins"
+        Name = "automation"
       }
     }
 ]
@@ -280,7 +280,7 @@ bastion_sg_egress_rules = [
   }
 ]
 
-jenkins_sg_ingress_rules = [
+automation_sg_ingress_rules = [
   {
     description = "Allow SHH"
     cidr_blocks = ["10.0.0.0/16"]
@@ -294,7 +294,7 @@ jenkins_sg_ingress_rules = [
   }
 ]
 
-jenkins_sg_egress_rules = [
+automation_sg_egress_rules = [
   {
     description = "Allow all Outbound"
     cidr_blocks = ["0.0.0.0/0"]
@@ -326,7 +326,7 @@ ec2_db = {
     instance_size = "t2.micro"
   }
 
-ec2_jenkins = {
+ec2_automation = {
     image_name = ["debian-12-amd64-20240717-1811"]
     owner = ["amazon"]
     instance_size = "t2.micro"

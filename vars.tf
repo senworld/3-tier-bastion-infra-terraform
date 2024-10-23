@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "project" {
   type = string
-  default = "Java-3-Tier-Deployment"
+  default = "My-Infra"
 }
 
 variable "createdby" {
@@ -51,9 +51,9 @@ variable "db_tags" {
   }
 }
 
-variable "jenkins_tags" {
+variable "automation_tags" {
   default = {
-    Name = "Jenkins"
+    Name = "automation"
   }
 }
 
@@ -120,12 +120,12 @@ variable "bastion_sg_egress_rules" {
  default = null
 }
 
-variable "jenkins_sg_ingress_rules" {
+variable "automation_sg_ingress_rules" {
  type = any 
  default = null
 }
 
-variable "jenkins_sg_egress_rules" {
+variable "automation_sg_egress_rules" {
  type = any 
  default = null
 }
@@ -142,6 +142,6 @@ variable "ec2_db" {
   type = any
 }
 
-variable "ec2_jenkins" {
+variable "ec2_automation" {
   type = any
 }

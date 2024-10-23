@@ -46,15 +46,15 @@ module "security_group_db_a" {
 }
 
 ###################################
-#Jenkins Security Group declaration
+#automation Security Group declaration
 ###################################
-module "security_group_jenkins" {
+module "security_group_automation" {
   source = "./Modules/security_group"
   vpc_id = module.vpc_main.id
-  sg_name = "security_group_jenkins"
-  ingress_rule = jsondecode(jsonencode(var.jenkins_sg_ingress_rules))
-  egress_rule = jsondecode(jsonencode(var.jenkins_sg_egress_rules))
-  tags_value = merge(var.jenkins_tags,local.tags)
+  sg_name = "security_group_automation"
+  ingress_rule = jsondecode(jsonencode(var.automation_sg_ingress_rules))
+  egress_rule = jsondecode(jsonencode(var.automation_sg_egress_rules))
+  tags_value = merge(var.automation_tags,local.tags)
 }
 
 #================================================X================================================#
