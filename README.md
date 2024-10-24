@@ -147,13 +147,9 @@ For a full list of input variables, refer to the `vars.tf` file.
 
 After deployment, Terraform provides the following outputs:
 - **Bastion Host Public IP**: The public IP address to SSH into the bastion host.
+- **Bastion Host Private Key**: The private key to access Bastion Host.
 - **ALB DNS**: The DNS name of the AWS ALB.
-- **RDS Endpoint**: The database endpoint for the application.
 
 Refer to the `output.tf` file for a complete list of outputs.
 
 ---
-
-### Notes:
-- Ensure you update `path-to-your-image.png` to point to the actual image file in your repository.
-- Adjust variable values in `terraform.tfvars` to meet your specific requirements.
