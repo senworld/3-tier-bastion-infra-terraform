@@ -1,1 +1,158 @@
-# 3-tier-bastion-infra-terraform
+
+# AWS 3-Tier Architecture with Bastion Host
+
+This repository contains the Terraform code to deploy a highly available, secure 3-tier architecture on AWS. The architecture includes a bastion host for secure access, an NGINX reverse proxy in the public subnet, application servers in the private subnet, and an RDS instance for the database layer. It leverages best practices such as private networking, security groups, and Network ACLs (NACLs) to ensure robust security and scalability.
+
+![Architecture Diagram](./asset/arch.svg)
+
+## Table of Contents
+- [Overview](#overview)
+- [Architecture Components](#architecture-components)
+- [Prerequisites](#prerequisites)
+- [Terraform Setup](#terraform-setup)
+  - [Initialization](#initialization)
+  - [Planning and Deployment](#planning-and-deployment)
+  - [Teardown](#teardown)
+- [Modules](#modules)
+- [Variables](#variables)
+- [Outputs](#outputs)
+
+## Overview
+
+This deployment utilizes Terraform to provision the following:
+- A Virtual Private Cloud (VPC) with public and private subnets across multiple availability zones.
+- A bastion host in a public subnet for SSH access to private instances.
+- An NGINX reverse proxy in the public subnet that routes traffic to the application tier.
+- Application servers in private subnets, isolated from public internet access.
+- A Relational Database Service (RDS) instance in a private subnet.
+- Integration with GitHub for CI/CD to automate infrastructure changes and application deployment.
+
+## Architecture Components
+
+1. **VPC and Subnets**:
+   - A custom VPC with CIDR `192.168.0.0/16`.
+   - Public subnets for the bastion host and NGINX load balancer.
+   - Private subnets for application servers and RDS, isolated from the internet.
+
+2. **Bastion Host**:
+   - Deployed in a public subnet.
+   - Accessible only via SSH from allowed IPs, providing secure access to instances in private subnets.
+
+3. **NGINX Reverse Proxy**:
+   - Sits in the public subnet and routes requests to the application tier.
+   - Acts as a load balancer and gateway for application servers in private subnets.
+
+4. **Application Servers**:
+   - Deployed across multiple private subnets for high availability.
+   - Scalable EC2 instances with auto-scaling enabled.
+
+5. **RDS Database**:
+   - A MySQL RDS instance deployed in a private subnet.
+   - Secured by Security Groups and NACLs, accessible only from the application servers.
+
+6. **Security**:
+   - Security Groups and NACLs to control inbound and outbound traffic at the subnet and instance level.
+   - No direct internet access to private subnets; all communication is routed via the bastion host or NGINX proxy.
+
+## Prerequisites
+
+Before you begin, ensure that you have the following:
+- AWS account with appropriate permissions for VPC, EC2, RDS, and IAM.
+- [Terraform](https://www.terraform.io/downloads.html) version 1.0 or higher installed.
+- [AWS CLI](https://aws.amazon.com/cli/) configured with credentials and default region.
+- A key pair for SSH access to the bastion host.
+
+## Terraform Setup
+
+### Initialization
+
+1. Clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/your-repo/aws-3-tier-bastion.git
+   cd aws-3-tier-bastion
+   ```
+
+2. Initialize Terraform to download the necessary providers and modules:
+   ```bash
+   terraform init
+   ```
+
+### Planning and Deployment
+
+1. Review the Terraform execution plan:
+   ```bash
+   terraform plan
+   ```
+
+   This will display the actions Terraform will take to create your infrastructure. Review the output carefully before proceeding.
+
+2. Apply the Terraform configuration to deploy the infrastructure:
+   ```bash
+   terraform apply
+   ```
+
+   Confirm the action, and Terraform will create all resources in AWS.
+
+### Teardown
+
+To destroy all resources and clean up your AWS account:
+```bash
+terraform destroy
+```
+
+This command will remove all the infrastructure resources provisioned by Terraform.
+
+## Modules
+
+The architecture uses modular Terraform code to improve reusability and organization. The following core modules are used:
+
+- **VPC Module**: 
+  - Provisions the VPC, subnets, route tables, and network interfaces.
+  
+- **EC2 Module**:
+  - Manages the bastion host and application servers (auto-scaling group).
+  
+- **RDS Module**:
+  - Configures the RDS instance, including parameter groups and subnet groups.
+
+- **NGINX Load Balancer Module**:
+  - Sets up an NGINX instance to serve as a reverse proxy for the app servers.
+  
+- **Security Groups and NACL Module**:
+  - Configures security groups and NACLs to control inbound/outbound traffic.
+
+- **CI/CD Integration**:
+  - Includes integration with GitHub Actions or other CI tools to automatically deploy infrastructure changes.
+
+## Variables
+
+The following variables are used to customize the deployment. You can update these values in the `terraform.tfvars` file:
+
+- **AWS Region**: 
+  - `region`: AWS region where resources will be deployed (e.g., `us-east-1`).
+  
+- **VPC and Subnet Configuration**:
+  - `vpc_cidr`: The CIDR block for the VPC.
+  - `public_subnets`: List of public subnet CIDRs.
+  - `private_subnets`: List of private subnet CIDRs.
+  
+- **Instance Settings**:
+  - `instance_type`: Type of EC2 instances for the app servers (e.g., `t3.micro`).
+  - `desired_capacity`: Number of app instances to start with in the auto-scaling group.
+
+For a full list of input variables, refer to the `vars.tf` file.
+
+## Outputs
+
+After deployment, Terraform provides the following outputs:
+- **Bastion Host Public IP**: The public IP address to SSH into the bastion host.
+- **NGINX Load Balancer DNS**: The DNS name of the NGINX load balancer.
+- **RDS Endpoint**: The database endpoint for the application.
+
+Refer to the `output.tf` file for a complete list of outputs.
+
+---
+
+### Notes:
+- Ensure you update `path-to-your-image.png` to point to the actual image file in your repository.
+- Adjust variable values in `terraform.tfvars` to meet your specific requirements.
