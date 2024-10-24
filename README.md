@@ -1,4 +1,4 @@
-# AWS 3-Tier Architecture with Bastion Host, NAT Gateway, and Key Management
+# AWS 3-Tier Architecture with Bastion Host
 
 This repository contains the Terraform code to deploy a highly available, secure 3-tier architecture on AWS. The architecture includes a bastion host for secure access, an AWS Application Load Balancer (ALB) in the public subnet for handling public traffic, NGINX servers in the private subnet as reverse proxies, application servers in the private subnet, an RDS instance for the database layer, a NAT Gateway for outbound internet access from the private subnets, and secure key management for accessing servers. The private keys for the NGINX, application, and CI/CD servers are accessible only from the bastion host, and the private key for the bastion host is stored locally inside the Terraform working folder.
 
