@@ -89,7 +89,7 @@ Before you begin, ensure that you have the following:
 1. Clone the repository to your local machine:
    ```bash
    git clone https://github.com/senworld/aws-3tier-infra-with-bastion.git
-   cd aws-3-tier-bastion
+   cd aws-3tier-infra-with-bastion
    ```
 
 2. Initialize Terraform to download the necessary providers and modules:
