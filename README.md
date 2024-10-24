@@ -1,7 +1,7 @@
 
 # AWS 3-Tier Architecture with Bastion Host
 
-This repository contains the Terraform code to deploy a highly available, secure 3-tier architecture on AWS. The architecture includes a bastion host for secure access, an NGINX reverse proxy in the public subnet, application servers in the private subnet, and an RDS instance for the database layer. It leverages best practices such as private networking, security groups, and Network ACLs (NACLs) to ensure robust security and scalability.
+This repository contains the Terraform code to deploy a highly available, secure 3-tier architecture on AWS. The architecture includes a bastion host for secure access, an AWS Application Load Balancer (ALB) in the public subnet for handling public traffic, NGINX servers in the private subnet as reverse proxies, application servers in the private subnet, and an RDS instance for the database layer. It leverages best practices such as private networking, security groups, and Network ACLs (NACLs) to ensure robust security and scalability.
 
 ![Architecture Diagram](./asset/arch.svg)
 
@@ -22,7 +22,8 @@ This repository contains the Terraform code to deploy a highly available, secure
 This deployment utilizes Terraform to provision the following:
 - A Virtual Private Cloud (VPC) with public and private subnets across multiple availability zones.
 - A bastion host in a public subnet for SSH access to private instances.
-- An NGINX reverse proxy in the public subnet that routes traffic to the application tier.
+- An AWS Application Load Balancer (ALB) in the public subnet to route traffic to the NGINX reverse proxy servers.
+- NGINX reverse proxy servers in private subnets that route traffic to the application tier.
 - Application servers in private subnets, isolated from public internet access.
 - A Relational Database Service (RDS) instance in a private subnet.
 - Integration with GitHub for CI/CD to automate infrastructure changes and application deployment.
@@ -31,16 +32,16 @@ This deployment utilizes Terraform to provision the following:
 
 1. **VPC and Subnets**:
    - A custom VPC with CIDR `192.168.0.0/16`.
-   - Public subnets for the bastion host and NGINX load balancer.
-   - Private subnets for application servers and RDS, isolated from the internet.
+   - Public subnets for the bastion host and AWS ALB.
+   - Private subnets for NGINX reverse proxies, application servers, and RDS, isolated from the internet.
 
 2. **Bastion Host**:
    - Deployed in a public subnet.
    - Accessible only via SSH from allowed IPs, providing secure access to instances in private subnets.
 
-3. **NGINX Reverse Proxy**:
-   - Sits in the public subnet and routes requests to the application tier.
-   - Acts as a load balancer and gateway for application servers in private subnets.
+3. **AWS ALB and NGINX Reverse Proxy**:
+   - The ALB sits in the public subnet and routes public traffic to NGINX reverse proxies in private subnets.
+   - NGINX servers act as reverse proxies and load balancers for the application servers.
 
 4. **Application Servers**:
    - Deployed across multiple private subnets for high availability.
@@ -52,7 +53,7 @@ This deployment utilizes Terraform to provision the following:
 
 6. **Security**:
    - Security Groups and NACLs to control inbound and outbound traffic at the subnet and instance level.
-   - No direct internet access to private subnets; all communication is routed via the bastion host or NGINX proxy.
+   - No direct internet access to private subnets; all communication is routed via the bastion host or ALB -> NGINX proxy.
 
 ## Prerequisites
 
@@ -115,8 +116,8 @@ The architecture uses modular Terraform code to improve reusability and organiza
 - **RDS Module**:
   - Configures the RDS instance, including parameter groups and subnet groups.
 
-- **NGINX Load Balancer Module**:
-  - Sets up an NGINX instance to serve as a reverse proxy for the app servers.
+- **ALB and NGINX Module**:
+  - Sets up the AWS ALB in the public subnet and NGINX reverse proxies in private subnets.
   
 - **Security Groups and NACL Module**:
   - Configures security groups and NACLs to control inbound/outbound traffic.
@@ -146,7 +147,7 @@ For a full list of input variables, refer to the `vars.tf` file.
 
 After deployment, Terraform provides the following outputs:
 - **Bastion Host Public IP**: The public IP address to SSH into the bastion host.
-- **NGINX Load Balancer DNS**: The DNS name of the NGINX load balancer.
+- **ALB DNS**: The DNS name of the AWS ALB.
 - **RDS Endpoint**: The database endpoint for the application.
 
 Refer to the `output.tf` file for a complete list of outputs.
